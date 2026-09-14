@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="style.css?v=5.0">
 </head>
 <body>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
 
   <!-- Top Header -->
   <header>
