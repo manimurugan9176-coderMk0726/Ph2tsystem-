@@ -585,3 +585,37 @@ footer {
   font-size: 0.88rem;
   margin-top: 55px;
 }
+/* மொபைல் ஆப் லுக் & ஃபீல் */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; /* தொடும்போது நீல நிறம் வராமல் தடுக்க */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f4f6f9;
+  user-select: none; /* ஆப் போல டெக்ஸ்ட் செலக்ட் ஆகாமல் இருக்க */
+  overflow-x: hidden;
+}
+
+/* வெப்சைட் கண்டெய்னரை மொபைல் அளவுக்கு அடக்குதல் */
+.container, main, #app {
+  width: 100% !important;
+  max-width: 480px !important; /* மொபைல் ஸ்கிரீன் சைஸ் */
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* பட்டன்களை ஆப் பட்டன் மாதிரி பெரிதாக்க */
+button, .btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
