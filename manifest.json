@@ -3,7 +3,8 @@
   "name": "ph2t system",
   "short_name": "ph2t",
   "description": "ph2t system - Doctor and Patient Healthcare Management Application.",
-  "start_url": "./index.html" "./style.css"
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2e7d32",
