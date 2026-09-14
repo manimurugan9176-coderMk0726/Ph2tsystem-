@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediTrack Pro - Clinical Health Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #090e1a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.4);
+      --nurse-accent: #ec4899;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 20%, #1e293b 0%, #090e1a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Keyframe Animations */
+    @keyframes pulseHeart {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--primary)); }
+      50% { transform: scale(1.18); filter: drop-shadow(0 0 10px var(--primary)); }
+      100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--primary)); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 8%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo i {
+      color: var(--primary);
+      animation: pulseHeart 1.8s infinite ease-in-out;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 15px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-logout:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* Login Portal */
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 85vh;
+      padding: 20px;
+      animation: slideUp 0.8s ease;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      padding: 35px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    .login-card .main-icon {
+      font-size: 3.2rem;
+      color: var(--primary);
+      animation: pulseHeart 2s infinite ease-in-out;
+      margin-bottom: 12px;
+    }
+
+    .role-selector {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .role-btn i {
+      font-size: 1.3rem;
+    }
+
+    .role-btn.active {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.15);
+      color: #fff;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .role-btn.nurse-btn.active {
+      border-color: var(--nurse-accent);
+      background: rgba(236, 72, 153, 0.15);
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #0b1329;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--primary-glow);
+    }
+
+    /* Dashboard & Cards */
+    .container {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 25px 20px;
+      animation: slideUp 0.6s ease;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 25px 0 35px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-card.yellow { border-left-color: var(--warning); }
+    .stat-card.red { border-left-color: var(--danger); }
+    .stat-card.green { border-left-color: var(--success); }
+
+    .stat-icon {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .stat-card.yellow .stat-icon { color: var(--warning); }
+    .stat-card.red .stat-icon { color: var(--danger); }
+    .stat-card.green .stat-icon { color: var(--success); }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 25px;
+    }
+
+    @media (max-width: 850px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .patient-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 580px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .patient-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 18px;
+      border-radius: 10px;
+      position: relative;
+      animation: floatCard 4s ease-in-out infinite alternate;
+      transition: 0.3s;
+    }
+
+    .patient-card:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .patient-card.status-critical { border-left-color: var(--danger); }
+    .patient-card.status-recovered { border-left-color: var(--success); }
+    .patient-card.status-ongoing { border-left-color: var(--warning); }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .badge.ongoing { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+    .badge.critical { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+    .badge.recovered { background: rgba(16, 185, 129, 0.2); color: var(--success); border: 1px solid var(--success); }
+
+    .btn-remove {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn-remove:hover {
+      transform: scale(1.2);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-heart-pulse"></i>
+      <div>Medi<span>Track</span> Pro</div>
+    </div>
+    <div id="navRight" style="display: none; align-items: center;">
+      <div class="user-badge" id="currentUserBadge">
+        <i class="fa-solid fa-user-shield"></i> <span id="currentRole">Doctor</span>
+      </div>
+      <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+    </div>
+  </header>
+
+  <!-- Login Section -->
+  <section id="loginSection" class="login-wrapper">
+    <div class="login-card">
+      <i class="fa-solid fa-hospital-user main-icon"></i>
+      <h2>Clinical Portal Login</h2>
+      <p style="color: var(--muted); font-size: 0.9rem;">Choose role and enter credentials</p>
+
+      <!-- Role Selector -->
+      <div class="role-selector">
+        <button type="button" class="role-btn active" id="btnRoleDoctor" onclick="selectRole('Doctor')">
+          <i class="fa-solid fa-user-doctor"></i> Doctor
+        </button>
+        <button type="button" class="role-btn nurse-btn" id="btnRoleNurse" onclick="selectRole('Nurse')">
+          <i class="fa-solid fa-user-nurse"></i> Nurse / Staff
+        </button>
+      </div>
+
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Username</label>
+          <input type="text" id="loginUser" required placeholder="Doctor: doctor | Nurse: nurse">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="loginPass" required placeholder="Password: 1234">
+        </div>
+
+        <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        <p id="loginError" style="color:var(--danger); font-size:0.85rem; margin-top:10px;"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main Tracking App -->
+  <main id="mainApp" style="display: none;">
+    <div class="container">
+      <div class="hero">
+        <h1>Patient Health &<br><span>Treatment Tracking Portal</span></h1>
+        <p style="color: var(--muted); margin-top: 8px;">Real-time clinical observation, active prescriptions & follow-up scheduler</p>
+      </div>
+
+      <!-- Live Counters -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <i class="fa-solid fa-hospital-user stat-icon"></i>
+          <div><h3 id="statTotal">0</h3><p style="color:var(--muted); font-size:0.85rem;">Total Records</p></div>
+        </div>
+        <div class="stat-card yellow">
+          <i class="fa-solid fa-clock-rotate-left stat-icon"></i>
+          <div><h3 id="statOngoing">0</h3><p style="color:var(--muted); font-size:0.85rem;">Under Treatment</p></div>
+        </div>
+        <div class="stat-card red">
+          <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+          <div><h3 id="statCritical">0</h3><p style="color:var(--muted); font-size:0.85rem;">Critical Priority</p></div>
+        </div>
+        <div class="stat-card green">
+          <i class="fa-solid fa-circle-check stat-icon"></i>
+          <div><h3 id="statRecovered">0</h3><p style="color:var(--muted); font-size:0.85rem;">Discharged / Recovered</p></div>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="grid-layout">
+        <!-- Add Record Card -->
+        <div class="card">
+          <h2><i class="fa-solid fa-notes-medical"></i> Add Patient Entry</h2>
+          <form onsubmit="addPatient(event)">
+            <div class="form-group">
+              <label>Patient Full Name</label>
+              <input type="text" id="pName" required placeholder="e.g. Ramesh Kumar">
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <div class="form-group" style="flex:1;">
+                <label>Age</label>
+                <input type="number" id="pAge" required placeholder="Years">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label>Gender</label>
+                <select id="pGender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Health Issue / Symptoms</label>
+              <input type="text" id="pDiagnosis" required placeholder="e.g. Chronic Asthma, Fever">
+            </div>
+
+            <div class="form-group">
+              <label>Treatment / Prescriptions</label>
+              <textarea id="pTreatment" required placeholder="Medications, IV doses, doctor orders..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Current Status</label>
+              <select id="pStatus">
+                <option value="Ongoing">Under Treatment (Ongoing)</option>
+                <option value="Critical">Critical Priority</option>
+                <option value="Recovered">Recovered / Normal</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Next Follow-Up / Ward Round</label>
+              <input type="date" id="pDate">
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fa-solid fa-plus-circle"></i> Save Patient Record</button>
+          </form>
+        </div>
+
+        <!-- History Display Card -->
+        <div class="card">
+          <h2><i class="fa-solid fa-clipboard-list"></i> Clinical Records List</h2>
+          <div class="form-group">
+            <input type="text" id="searchBox" placeholder="🔍 Search patient name, symptoms, or status..." oninput="filterPatients()">
+          </div>
+
+          <div id="patientList" class="patient-grid"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🩺 MediTrack Pro - Hospital Health & Treatment Tracking System</p>
+  </footer>
+
+  <script>
+    let activeRole = 'Doctor';
+
+    // Preset Default Data
+    const initialRecords = [
+      { id: 1, name: "Kavitha Raj", age: 42, gender: "Female", diagnosis: "Type 2 Diabetes", treatment: "Metformin 500mg, Diabetic Diet", status: "Ongoing", date: "2026-09-25" },
+      { id: 2, name: "Murugan S", age: 58, gender: "Male", diagnosis: "Acute Hypertension", treatment: "Amlodipine 5mg, Hourly BP monitoring", status: "Critical", date: "2026-09-18" },
+      { id: 3, name: "Aakash V", age: 24, gender: "Male", diagnosis: "Post-surgery Recovery", treatment: "Antibiotic regimen completed", status: "Recovered", date: "Discharged" }
+    ];
+
+    let patients = JSON.parse(localStorage.getItem('patient_records')) || initialRecords;
+
+    function selectRole(role) {
+      activeRole = role;
+      document.getElementById('btnRoleDoctor').classList.toggle('active', role === 'Doctor');
+      document.getElementById('btnRoleNurse').classList.toggle('active', role === 'Nurse');
+      
+      const userInput = document.getElementById('loginUser');
+      userInput.placeholder = role === 'Doctor' ? 'Enter: doctor' : 'Enter: nurse';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUser').value.trim().toLowerCase();
+      const p = document.getElementById('loginPass').value.trim();
+      const err = document.getElementById('loginError');
+
+      if ((activeRole === 'Doctor' && u === 'doctor' && p === '1234') ||
+          (activeRole === 'Nurse' && u === 'nurse' && p === '1234')) {
+        sessionStorage.setItem('meditrack_user', activeRole);
+        err.innerText = '';
+        renderDashboard();
+      } else {
+        err.innerText = `Incorrect credentials for ${activeRole}!`;
+      }
+    }
+
+    function renderDashboard() {
+      const role = sessionStorage.getItem('meditrack_user') || 'Doctor';
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'block';
+      document.getElementById('navRight').style.display = 'flex';
+      
+      document.getElementById('currentRole').innerText = role;
+      const icon = role === 'Doctor' ? 'fa-user-doctor' : 'fa-user-nurse';
+      document.getElementById('currentUserBadge').innerHTML = `<i class="fa-solid ${icon}"></i> <span>${role}</span>`;
+
+      renderRecords();
+    }
+
+    function logout() {
+      sessionStorage.removeItem('meditrack_user');
+      document.getElementById('loginSection').style.display = 'flex';
+      document.getElementById('mainApp').style.display = 'none';
+      document.getElementById('navRight').style.display = 'none';
+    }
+
+    function addPatient(e) {
+      e.preventDefault();
+      const newEntry = {
+        id: Date.now(),
+        name: document.getElementById('pName').value.trim(),
+        age: document.getElementById('pAge').value,
+        gender: document.getElementById('pGender').value,
+        diagnosis: document.getElementById('pDiagnosis').value.trim(),
+        treatment: document.getElementById('pTreatment').value.trim(),
+        status: document.getElementById('pStatus').value,
+        date: document.getElementById('pDate').value || 'Not Scheduled'
+      };
+
+      patients.unshift(newEntry);
+      localStorage.setItem('patient_records', JSON.stringify(patients));
+      e.target.reset();
+      renderRecords();
+    }
+
+    function removePatient(id) {
+      const currentRole = sessionStorage.getItem('meditrack_user');
+      if (currentRole !== 'Doctor') {
+        alert('Permission Denied: Only Doctors can delete medical records!');
+        return;
+      }
+
+      if (confirm('Delete this patient entry from system?')) {
+        patients = patients.filter(p => p.id !== id);
+        localStorage.setItem('patient_records', JSON.stringify(patients));
+        renderRecords();
+      }
+    }
+
+    function filterPatients() {
+      const q = document.getElementById('searchBox').value.toLowerCase();
+      const filtered = patients.filter(p => 
+        p.name.toLowerCase().includes(q) || 
+        p.diagnosis.toLowerCase().includes(q) ||
+        p.status.toLowerCase().includes(q)
+      );
+      renderList(filtered);
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').innerText = patients.length;
+      document.getElementById('statOngoing').innerText = patients.filter(p => p.status === 'Ongoing').length;
+      document.getElementById('statCritical').innerText = patients.filter(p => p.status === 'Critical').length;
+      document.getElementById('statRecovered').innerText = patients.filter(p => p.status === 'Recovered').length;
+    }
+
+    function renderRecords() {
+      updateStats();
+      renderList(patients);
+    }
+
+    function renderList(records) {
+      const list = document.getElementById('patientList');
+      list.innerHTML = '';
+
+      if (records.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:var(--muted); padding:30px;">No patient files found.</p>';
+        return;
+      }
+
+      const role = sessionStorage.getItem('meditrack_user');
+
+      records.forEach(p => {
+        let statusClass = 'ongoing';
+        if (p.status === 'Critical') statusClass = 'critical';
+        if (p.status === 'Recovered') statusClass = 'recovered';
+
+        const card = document.createElement('div');
+        card.className = `patient-card status-${statusClass}`;
+        
+        // Only show delete button for Doctor
+        const deleteBtn = role === 'Doctor' 
+          ? `<button class="btn-remove" onclick="removePatient(${p.id})"><i class="fa-solid fa-trash"></i></button>` 
+          : '';
+
+        card.innerHTML = `
+          ${deleteBtn}
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-right:25px;">
+            <h4 style="color:#fff; font-size:1.05rem;"><i class="fa-solid fa-user"></i> ${p.name} (${p.age}y, ${p.gender})</h4>
+            <span class="badge ${statusClass}">${p.status}</span>
+          </div>
+          <div style="font-size:0.9rem; color:var(--muted); display:grid; gap:4px;">
+            <div><strong style="color:#cbd5e1;">Diagnosis:</strong> ${p.diagnosis}</div>
+            <div><strong style="color:#cbd5e1;">Prescription:</strong> ${p.treatment}</div>
+            <div><strong style="color:#cbd5e1;">Next Round:</strong> ${p.date}</div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Auto-login if session active
+    if (sessionStorage.getItem('meditrack_user')) {
+      renderDashboard();
+    }
+  </script>
+</body>
+</html>
