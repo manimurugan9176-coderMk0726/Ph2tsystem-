@@ -34,4 +34,414 @@
   <script src="script.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Energy Waste Detector</title>
+  <style>
+    :root {
+      --bg-color: #0b1329;
+      --card-bg: #1e293b;
+      --primary: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 8%;
+      background: rgba(15, 23, 42, 0.95);
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid #334155;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 25px;
+    }
+
+    .btn-start {
+      display: inline-block;
+      background: var(--primary);
+      color: #0f172a;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .detector-card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      margin-bottom: 40px;
+    }
+
+    .detector-card h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    button.calc-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #0f172a;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .results {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .result-item {
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .result-item h4 {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+    }
+
+    .result-item p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .recommendation-box {
+      margin-top: 20px;
+      background: #0f172a;
+      padding: 18px;
+      border-radius: 8px;
+      border-left: 4px solid var(--warning);
+    }
+
+    .recommendation-box h4 {
+      color: var(--warning);
+      margin-bottom: 5px;
+    }
+
+    .tips-section {
+      margin-top: 30px;
+    }
+
+    .tips-section h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--primary);
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+    }
+
+    .tip-card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .tip-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .tip-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .tip-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-muted);
+      border-top: 1px solid #1e293b;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">⚡ Smart Energy</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#detector">Detector</a>
+      <a href="#tips">Tips</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <h1>Smart Energy<br><span>Waste Detector</span></h1>
+    <p>Detect electricity wastage and get smart suggestions to reduce energy consumption.</p>
+    <a href="#detector" class="btn-start">Start Detection</a>
+  </section>
+
+  <div class="container" id="detector">
+    <div class="detector-card">
+      <h2>⚡ Energy Waste Detector</h2>
+
+      <div class="form-group">
+        <label>Select Appliance:</label>
+        <select id="applianceSelect" onchange="autoFillWatts()">
+          <option value="">-- Select or type below --</option>
+          <option value="Air Conditioner" data-watts="1500">Air Conditioner (AC)</option>
+          <option value="Refrigerator" data-watts="250">Refrigerator (Fridge)</option>
+          <option value="Ceiling Fan" data-watts="75">Ceiling Fan</option>
+          <option value="Television" data-watts="100">Television (TV)</option>
+          <option value="Water Heater" data-watts="2000">Water Heater (Geyser)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Appliance Name:</label>
+        <input type="text" id="applianceName" placeholder="e.g., Gaming PC, Microwave">
+      </div>
+
+      <div class="form-group">
+        <label>Power Consumption (Watts):</label>
+        <input type="number" id="applianceWatts" placeholder="e.g., 1500">
+      </div>
+
+      <div class="form-group">
+        <label>Daily Usage (Hours):</label>
+        <input type="number" id="dailyHours" placeholder="e.g., 8" min="0.5" max="24" step="0.5">
+      </div>
+
+      <button class="calc-btn" onclick="detectWaste()">Analyze Energy</button>
+
+      <div id="outputArea" style="display: none;">
+        <div class="results">
+          <div class="result-item">
+            <h4>Appliance</h4>
+            <p id="resName">-</p>
+          </div>
+          <div class="result-item">
+            <h4>Energy Used</h4>
+            <p id="resUnits">-</p>
+          </div>
+          <div class="result-item">
+            <h4>Estimated Daily Cost</h4>
+            <p id="resCost">-</p>
+          </div>
+          <div class="result-item">
+            <h4>Status</h4>
+            <p id="resStatus">-</p>
+          </div>
+        </div>
+
+        <div class="recommendation-box">
+          <h4>💡 Recommendation</h4>
+          <p id="resTip">-</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="tips-section" id="tips">
+      <h2>💡 Energy Saving Tips</h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">💡</div>
+          <h3>Switch Off Lights</h3>
+          <p>Turn off lights when leaving rooms and switch to LED bulbs.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">❄️</div>
+          <h3>Use AC Wisely</h3>
+          <p>Keep the thermostat at 24°C to save up to 24% electricity.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🔌</div>
+          <h3>Unplug Devices</h3>
+          <p>Phantom power continues to drain even when appliances are off.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">⚡</div>
+          <h3>Monitor Usage</h3>
+          <p>Check usage patterns daily to cut down unexpected costs.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>⚡ Smart Energy Waste Detector</p>
+    <p>College Expo & Mini Project</p>
+  </footer>
+
+  <script>
+    function autoFillWatts() {
+      const select = document.getElementById("applianceSelect");
+      const selectedOption = select.options[select.selectedIndex];
+      const wattsInput = document.getElementById("applianceWatts");
+      const nameInput = document.getElementById("applianceName");
+
+      if (select.value) {
+        nameInput.value = select.value;
+        wattsInput.value = selectedOption.getAttribute("data-watts");
+      }
+    }
+
+    function detectWaste() {
+      const name = document.getElementById("applianceName").value.trim();
+      const watts = parseFloat(document.getElementById("applianceWatts").value);
+      const hours = parseFloat(document.getElementById("dailyHours").value);
+      const unitRate = 6.5; // Average tariff rate in ₹
+
+      if (!name || isNaN(watts) || isNaN(hours) || hours <= 0 || watts <= 0) {
+        alert("தயவுசெய்து அனைத்து விவரங்களையும் சரியாக உள்ளிடவும்!");
+        return;
+      }
+
+      if (hours > 24) {
+        alert("ஒரு நாளில் பயன்பாட்டு நேரம் 24 மணி நேரத்திற்கு மேல் இருக்க முடியாது!");
+        return;
+      }
+
+      // Calculation: (Watts * Hours) / 1000 = Units (kWh)
+      const unitsPerDay = ((watts * hours) / 1000).toFixed(2);
+      const dailyCost = (unitsPerDay * unitRate).toFixed(2);
+
+      let status = "Normal Usage ✅";
+      let statusColor = "#10b981";
+      let recommendation = "Optimal power consumption! Keep following this routine.";
+
+      // Detection logic
+      if (watts >= 1000 && hours > 8) {
+        status = "Critical Wastage 🚨";
+        statusColor = "#ef4444";
+        recommendation = "Heavy load detected running for extended periods! Use automated timers or optimize running cycles.";
+      } else if (hours > 14) {
+        status = "Excessive Idle Time ⚠️";
+        statusColor = "#f59e0b";
+        recommendation = "This appliance runs idle for too long. Unplug or switch it off when not in active use.";
+      } else if (unitsPerDay > 10) {
+        status = "High Consumption ⚠️";
+        statusColor = "#f59e0b";
+        recommendation = "Daily consumption is high for a single device. Consider 5-star BEE rated energy-efficient models.";
+      }
+
+      // Display results
+      document.getElementById("resName").innerText = name;
+      document.getElementById("resUnits").innerText = `${unitsPerDay} kWh`;
+      document.getElementById("resCost").innerText = `₹${dailyCost}`;
+      
+      const statusElement = document.getElementById("resStatus");
+      statusElement.innerText = status;
+      statusElement.style.color = statusColor;
+
+      document.getElementById("resTip").innerText = recommendation;
+      document.getElementById("outputArea").style.display = "block";
+
+      // Smooth scroll to results
+      document.getElementById("outputArea").scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
 
