@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediTrack - Patient Treatment System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-heart-pulse"></i> Medi<span>Track</span>
+    </div>
+    <nav id="navLinks" style="display: none;">
+      <a href="#dashboard"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="#add-patient"><i class="fa-solid fa-user-plus"></i> Add Patient</a>
+      <a href="#records"><i class="fa-solid fa-notes-medical"></i> Records</a>
+      <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </nav>
+  </header>
+
+  <!-- Login Section -->
+  <section id="loginSection" class="login-wrapper">
+    <div class="login-card">
+      <div class="login-icon">
+        <i class="fa-solid fa-user-doctor"></i>
+      </div>
+      <h2>Doctor Portal</h2>
+      <p>Sign in to access patient records</p>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Username</label>
+          <input type="text" id="loginUser" required placeholder="Enter: doctor">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="loginPass" required placeholder="Enter: 1234">
+        </div>
+
+        <button type="submit" class="btn-primary">Login to System</button>
+        <p id="loginError" class="error-text"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main System (Hidden before login) -->
+  <main id="mainApp" style="display: none;">
+    <section class="hero" id="dashboard">
+      <h1>Patient Health &<br><span>Treatment Tracking System</span></h1>
+      <p>Monitor patient treatments, medication plans, and next follow-up dates effectively.</p>
+      <a href="#add-patient" class="btn-hero"><i class="fa-solid fa-plus"></i> New Entry</a>
+    </section>
+
+    <!-- Quick Stats Cards -->
+    <div class="container stats-container">
+      <div class="stat-card">
+        <i class="fa-solid fa-users stat-icon"></i>
+        <div>
+          <h3 id="statTotal">0</h3>
+          <p>Total Patients</p>
+        </div>
+      </div>
+      <div class="stat-card yellow">
+        <i class="fa-solid fa-clock stat-icon"></i>
+        <div>
+          <h3 id="statOngoing">0</h3>
+          <p>Ongoing Treatments</p>
+        </div>
+      </div>
+      <div class="stat-card red">
+        <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+        <div>
+          <h3 id="statCritical">0</h3>
+          <p>Critical Cases</p>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <i class="fa-solid fa-circle-check stat-icon"></i>
+        <div>
+          <h3 id="statRecovered">0</h3>
+          <p>Recovered</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container grid-layout" id="add-patient">
+      <!-- Add Record Form -->
+      <div class="card form-card">
+        <h2><i class="fa-solid fa-clipboard-user"></i> New Patient Record</h2>
+        <form onsubmit="addPatient(event)">
+          <div class="form-group">
+            <label>Patient Full Name</label>
+            <input type="text" id="pName" required placeholder="e.g. Ramesh Kumar">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Age</label>
+              <input type="number" id="pAge" required placeholder="Years">
+            </div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select id="pGender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Health Issue / Diagnosis</label>
+            <input type="text" id="pDiagnosis" required placeholder="e.g. Type 2 Diabetes, High BP">
+          </div>
+
+          <div class="form-group">
+            <label>Prescribed Treatment & Medicines</label>
+            <textarea id="pTreatment" required placeholder="Dosage, instructions, therapy..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Treatment Status</label>
+            <select id="pStatus">
+              <option value="Ongoing">Under Treatment (Ongoing)</option>
+              <option value="Critical">Critical Priority</option>
+              <option value="Recovered">Recovered / Normal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Next Follow-up Date</label>
+            <input type="date" id="pDate">
+          </div>
+
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Save Record</button>
+        </form>
+      </div>
+
+      <!-- Patients History List -->
+      <div class="card records-card" id="records">
+        <div class="records-header">
+          <h2><i class="fa-solid fa-list-check"></i> Patient Tracking Records</h2>
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchBox" placeholder="Search by name or diagnosis..." oninput="filterPatients()">
+          </div>
+        </div>
+
+        <div id="patientList" class="patient-grid"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🩺 MediTrack Pro - Patient Health and Treatment Tracking System</p>
+    <p>Healthcare Department Project</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
