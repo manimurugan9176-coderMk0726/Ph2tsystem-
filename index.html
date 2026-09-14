@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediTrack Pro - Clinical Health Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css?v=3.0">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="logo">
+      <i class="fa-solid fa-heart-pulse"></i>
+      <div>Medi<span>Track</span> Pro</div>
+    </div>
+    <div id="navRight" style="display: none; align-items: center;">
+      <div class="user-badge" id="currentUserBadge">
+        <i class="fa-solid fa-user-shield"></i> <span id="currentRole">Doctor</span>
+      </div>
+      <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+    </div>
+  </header>
+
+  <!-- Login Section -->
+  <section id="loginSection" class="login-wrapper">
+    <div class="login-card">
+      <i class="fa-solid fa-hospital-user main-icon"></i>
+      <h2>Clinical Portal Login</h2>
+      <p style="color: var(--muted); font-size: 0.9rem;">Choose role and enter credentials</p>
+
+      <div class="role-selector">
+        <button type="button" class="role-btn active" id="btnRoleDoctor" onclick="selectRole('Doctor')">
+          <i class="fa-solid fa-user-doctor"></i> Doctor
+        </button>
+        <button type="button" class="role-btn nurse-btn" id="btnRoleNurse" onclick="selectRole('Nurse')">
+          <i class="fa-solid fa-user-nurse"></i> Nurse / Staff
+        </button>
+      </div>
+
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Username</label>
+          <input type="text" id="loginUser" required placeholder="doctor">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="loginPass" required placeholder="1234">
+        </div>
+
+        <button type="submit" class="btn-submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        <p id="loginError" style="color:var(--danger); font-size:0.85rem; margin-top:10px;"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main Tracking App -->
+  <main id="mainApp" style="display: none;">
+    <div class="container">
+      <div class="hero">
+        <h1>Patient Health &<br><span>Treatment Tracking Portal</span></h1>
+        <p style="color: var(--muted); margin-top: 8px;">Real-time clinical observation, prescriptions, bed allocation & follow-up scheduler</p>
+      </div>
+
+      <!-- Live Counters -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <i class="fa-solid fa-hospital-user stat-icon"></i>
+          <div><h3 id="statTotal">0</h3><p style="color:var(--muted); font-size:0.85rem;">Total Records</p></div>
+        </div>
+        <div class="stat-card yellow">
+          <i class="fa-solid fa-bed stat-icon"></i>
+          <div><h3 id="statOngoing">0</h3><p style="color:var(--muted); font-size:0.85rem;">Admitted / Active</p></div>
+        </div>
+        <div class="stat-card red">
+          <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+          <div><h3 id="statCritical">0</h3><p style="color:var(--muted); font-size:0.85rem;">Critical Priority</p></div>
+        </div>
+        <div class="stat-card green">
+          <i class="fa-solid fa-house-medical-circle-check stat-icon"></i>
+          <div><h3 id="statRecovered">0</h3><p style="color:var(--muted); font-size:0.85rem;">Discharged</p></div>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="grid-layout">
+        <!-- Add Record Card -->
+        <div class="card">
+          <h2><i class="fa-solid fa-notes-medical"></i> Add Patient Entry</h2>
+          <form onsubmit="addPatient(event)">
+            <div class="form-group">
+              <label>Patient Full Name *</label>
+              <input type="text" id="pName" required placeholder="e.g. Ramesh Kumar">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Age *</label>
+                <input type="number" id="pAge" required placeholder="Years">
+              </div>
+              <div class="form-group">
+                <label>Gender *</label>
+                <select id="pGender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- New: Blood Group & Phone -->
+            <div class="form-row">
+              <div class="form-group">
+                <label>Blood Group</label>
+                <select id="pBlood">
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Contact Number *</label>
+                <input type="tel" id="pPhone" required placeholder="e.g. 9876543210">
+              </div>
+            </div>
+
+            <!-- New: Ward / Bed Number -->
+            <div class="form-group">
+              <label>Ward / Bed Number</label>
+              <input type="text" id="pBed" placeholder="e.g. General Ward - Bed 14 / ICU-02">
+            </div>
+
+            <div class="form-group">
+              <label>Diagnosis / Health Issue *</label>
+              <input type="text" id="pDiagnosis" required placeholder="e.g. Chronic Asthma, Fever">
+            </div>
+
+            <div class="form-group">
+              <label>Prescribed Treatment & Medicines *</label>
+              <textarea id="pTreatment" required placeholder="Medications, IV doses, doctor orders..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Current Status</label>
+              <select id="pStatus">
+                <option value="Ongoing">Under Treatment (Ongoing)</option>
+                <option value="Critical">Critical Priority</option>
+                <option value="Recovered">Recovered / Normal</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Next Follow-Up / Round Date</label>
+              <input type="date" id="pDate">
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fa-solid fa-plus-circle"></i> Save Patient Record</button>
+          </form>
+        </div>
+
+        <!-- History Display Card -->
+        <div class="card">
+          <h2><i class="fa-solid fa-clipboard-list"></i> Clinical Records List</h2>
+          <div class="form-group">
+            <input type="text" id="searchBox" placeholder="🔍 Search by name, phone, ward or diagnosis..." oninput="filterPatients()">
+          </div>
+
+          <div id="patientList" class="patient-grid"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🩺 MediTrack Pro - Hospital Health & Treatment Tracking System</p>
+  </footer>
+
+  <script src="script.js?v=3.0"></script>
+</body>
+</html>
