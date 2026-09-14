@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Energy Waste Detector</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>⚡ Smart Energy Waste Detector</h2>
+    
+    <label>Appliance Name:</label>
+    <input type="text" id="appliance" placeholder="e.g., AC, TV, Fan">
+
+    <label>Power (Watts):</label>
+    <input type="number" id="watts" placeholder="e.g., 1500 for AC">
+
+    <label>Daily Usage (Hours):</label>
+    <input type="number" id="hours" placeholder="e.g., 10">
+
+    <button onclick="calculateEnergy()">Check Wastage</button>
+
+    <div id="result" class="result-box" style="display:none;">
+      <h3>Analysis Result</h3>
+      <p><strong>Appliance:</strong> <span id="res-appliance"></span></p>
+      <p><strong>Energy Used:</strong> <span id="res-energy"></span> kWh/day</p>
+      <p><strong>Estimated Daily Cost:</strong> ₹<span id="res-cost"></span></p>
+      <p><strong>Status:</strong> <span id="res-status"></span></p>
+      <p><strong>💡 Recommendation:</strong> <span id="res-tip"></span></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
