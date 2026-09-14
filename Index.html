@@ -3,53 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Energy Waste Detector</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h2>⚡ Smart Energy Waste Detector</h2>
-    
-    <label>Appliance Name:</label>
-    <input type="text" id="appliance" placeholder="e.g., AC, TV, Fan">
-
-    <label>Power (Watts):</label>
-    <input type="number" id="watts" placeholder="e.g., 1500 for AC">
-
-    <label>Daily Usage (Hours):</label>
-    <input type="number" id="hours" placeholder="e.g., 10">
-
-    <button onclick="calculateEnergy()">Check Wastage</button>
-
-    <div id="result" class="result-box" style="display:none;">
-      <h3>Analysis Result</h3>
-      <p><strong>Appliance:</strong> <span id="res-appliance"></span></p>
-      <p><strong>Energy Used:</strong> <span id="res-energy"></span> kWh/day</p>
-      <p><strong>Estimated Daily Cost:</strong> ₹<span id="res-cost"></span></p>
-      <p><strong>Status:</strong> <span id="res-status"></span></p>
-      <p><strong>💡 Recommendation:</strong> <span id="res-tip"></span></p>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ta">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Energy Waste Detector</title>
+  <title>Patient Health & Treatment Tracking System</title>
   <style>
     :root {
-      --bg-color: #0b1329;
+      --bg-color: #0f172a;
       --card-bg: #1e293b;
-      --primary: #38bdf8;
+      --primary: #06b6d4;
+      --primary-hover: #0891b2;
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --danger: #ef4444;
-      --warning: #f59e0b;
       --success: #10b981;
+      --border: #334155;
     }
 
     * {
@@ -63,19 +28,16 @@
       background-color: var(--bg-color);
       color: var(--text);
       line-height: 1.6;
-      scroll-behavior: smooth;
+      padding-bottom: 50px;
     }
 
     header {
+      background: #1e293b;
+      padding: 20px 8%;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 8%;
-      background: rgba(15, 23, 42, 0.95);
-      position: sticky;
-      top: 0;
-      border-bottom: 1px solid #334155;
-      z-index: 100;
     }
 
     .logo {
@@ -84,364 +46,302 @@
       color: var(--primary);
     }
 
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: var(--primary);
-    }
-
-    .hero {
-      text-align: center;
-      padding: 60px 20px 40px;
-    }
-
-    .hero h1 {
-      font-size: 2.2rem;
-      margin-bottom: 15px;
-    }
-
-    .hero h1 span {
-      color: var(--primary);
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      max-width: 500px;
-      margin: 0 auto 25px;
-    }
-
-    .btn-start {
-      display: inline-block;
-      background: var(--primary);
-      color: #0f172a;
-      padding: 10px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
     .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
     }
 
-    .detector-card {
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
       background: var(--card-bg);
-      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      margin-bottom: 40px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .detector-card h2 {
-      text-align: center;
-      margin-bottom: 25px;
+    h2, h3 {
       color: var(--primary);
+      margin-bottom: 20px;
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: #fff;
       font-size: 0.95rem;
     }
 
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #475569;
-      background: #0f172a;
-      color: #fff;
-      font-size: 1rem;
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
 
-    button.calc-btn {
+    button.btn {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       background: var(--primary);
       color: #0f172a;
       font-weight: bold;
       border: none;
       border-radius: 6px;
-      font-size: 1rem;
       cursor: pointer;
-      margin-top: 10px;
+      font-size: 1rem;
+      transition: 0.2s;
     }
 
-    .results {
-      margin-top: 30px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    button.btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+    }
+
+    .patient-list {
+      display: flex;
+      flex-direction: column;
       gap: 15px;
     }
 
-    .result-item {
+    .patient-item {
       background: #0f172a;
+      border-left: 4px solid var(--primary);
       padding: 15px;
       border-radius: 8px;
-      border-left: 4px solid var(--primary);
+      position: relative;
     }
 
-    .result-item h4 {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-bottom: 5px;
-    }
-
-    .result-item p {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    .recommendation-box {
-      margin-top: 20px;
-      background: #0f172a;
-      padding: 18px;
-      border-radius: 8px;
-      border-left: 4px solid var(--warning);
-    }
-
-    .recommendation-box h4 {
-      color: var(--warning);
-      margin-bottom: 5px;
-    }
-
-    .tips-section {
-      margin-top: 30px;
-    }
-
-    .tips-section h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: var(--primary);
-    }
-
-    .tips-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 18px;
-    }
-
-    .tip-card {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .tip-icon {
-      font-size: 2rem;
+    .patient-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
     }
 
-    .tip-card h3 {
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .badge-ongoing {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+
+    .badge-recovered {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .badge-critical {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .info-row {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .info-row strong {
+      color: #fff;
+    }
+
+    .btn-delete {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
       font-size: 1.1rem;
-      margin-bottom: 8px;
-    }
-
-    .tip-card p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: var(--text-muted);
-      border-top: 1px solid #1e293b;
-      margin-top: 40px;
-      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">⚡ Smart Energy</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#detector">Detector</a>
-      <a href="#tips">Tips</a>
-    </nav>
+    <div class="logo">🩺 MediTrack Pro</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">Patient Treatment System</p>
   </header>
 
-  <section class="hero" id="home">
-    <h1>Smart Energy<br><span>Waste Detector</span></h1>
-    <p>Detect electricity wastage and get smart suggestions to reduce energy consumption.</p>
-    <a href="#detector" class="btn-start">Start Detection</a>
-  </section>
+  <div class="container">
+    <div class="grid">
+      
+      <!-- Patient Form -->
+      <div class="card">
+        <h3>+ New Patient Record</h3>
+        <form id="patientForm" onsubmit="savePatient(event)">
+          <div class="form-group">
+            <label>Patient Full Name</label>
+            <input type="text" id="name" required placeholder="e.g. John Doe">
+          </div>
 
-  <div class="container" id="detector">
-    <div class="detector-card">
-      <h2>⚡ Energy Waste Detector</h2>
+          <div class="form-group">
+            <label>Age & Gender</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="number" id="age" required placeholder="Age" style="width: 45%;">
+              <select id="gender" required style="width: 55%;">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
 
-      <div class="form-group">
-        <label>Select Appliance:</label>
-        <select id="applianceSelect" onchange="autoFillWatts()">
-          <option value="">-- Select or type below --</option>
-          <option value="Air Conditioner" data-watts="1500">Air Conditioner (AC)</option>
-          <option value="Refrigerator" data-watts="250">Refrigerator (Fridge)</option>
-          <option value="Ceiling Fan" data-watts="75">Ceiling Fan</option>
-          <option value="Television" data-watts="100">Television (TV)</option>
-          <option value="Water Heater" data-watts="2000">Water Heater (Geyser)</option>
-        </select>
+          <div class="form-group">
+            <label>Diagnosis / Health Issue</label>
+            <input type="text" id="diagnosis" required placeholder="e.g. Hypertension, Fever">
+          </div>
+
+          <div class="form-group">
+            <label>Treatment / Prescribed Medicines</label>
+            <textarea id="treatment" required placeholder="Dosage, instructions, therapy..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Treatment Status</label>
+            <select id="status">
+              <option value="Ongoing">Ongoing</option>
+              <option value="Recovered">Recovered</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Next Follow-up Date</label>
+            <input type="date" id="followUpDate">
+          </div>
+
+          <button type="submit" class="btn">Save Record</button>
+        </form>
       </div>
 
-      <div class="form-group">
-        <label>Appliance Name:</label>
-        <input type="text" id="applianceName" placeholder="e.g., Gaming PC, Microwave">
-      </div>
-
-      <div class="form-group">
-        <label>Power Consumption (Watts):</label>
-        <input type="number" id="applianceWatts" placeholder="e.g., 1500">
-      </div>
-
-      <div class="form-group">
-        <label>Daily Usage (Hours):</label>
-        <input type="number" id="dailyHours" placeholder="e.g., 8" min="0.5" max="24" step="0.5">
-      </div>
-
-      <button class="calc-btn" onclick="detectWaste()">Analyze Energy</button>
-
-      <div id="outputArea" style="display: none;">
-        <div class="results">
-          <div class="result-item">
-            <h4>Appliance</h4>
-            <p id="resName">-</p>
-          </div>
-          <div class="result-item">
-            <h4>Energy Used</h4>
-            <p id="resUnits">-</p>
-          </div>
-          <div class="result-item">
-            <h4>Estimated Daily Cost</h4>
-            <p id="resCost">-</p>
-          </div>
-          <div class="result-item">
-            <h4>Status</h4>
-            <p id="resStatus">-</p>
-          </div>
+      <!-- Patient Records List -->
+      <div class="card">
+        <h3>📋 Patient Tracking Dashboard</h3>
+        
+        <div class="search-box">
+          <input type="text" id="search" placeholder="🔍 Search patient by name or illness..." onkeyup="filterPatients()">
         </div>
 
-        <div class="recommendation-box">
-          <h4>💡 Recommendation</h4>
-          <p id="resTip">-</p>
+        <div id="patientList" class="patient-list">
+          <!-- Dynamic records load here -->
         </div>
       </div>
+
     </div>
-
-    <section class="tips-section" id="tips">
-      <h2>💡 Energy Saving Tips</h2>
-      <div class="tips-grid">
-        <div class="tip-card">
-          <div class="tip-icon">💡</div>
-          <h3>Switch Off Lights</h3>
-          <p>Turn off lights when leaving rooms and switch to LED bulbs.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">❄️</div>
-          <h3>Use AC Wisely</h3>
-          <p>Keep the thermostat at 24°C to save up to 24% electricity.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">🔌</div>
-          <h3>Unplug Devices</h3>
-          <p>Phantom power continues to drain even when appliances are off.</p>
-        </div>
-        <div class="tip-card">
-          <div class="tip-icon">⚡</div>
-          <h3>Monitor Usage</h3>
-          <p>Check usage patterns daily to cut down unexpected costs.</p>
-        </div>
-      </div>
-    </section>
   </div>
 
-  <footer>
-    <p>⚡ Smart Energy Waste Detector</p>
-    <p>College Expo & Mini Project</p>
-  </footer>
-
   <script>
-    function autoFillWatts() {
-      const select = document.getElementById("applianceSelect");
-      const selectedOption = select.options[select.selectedIndex];
-      const wattsInput = document.getElementById("applianceWatts");
-      const nameInput = document.getElementById("applianceName");
+    let patients = JSON.parse(localStorage.getItem('patientsData')) || [];
 
-      if (select.value) {
-        nameInput.value = select.value;
-        wattsInput.value = selectedOption.getAttribute("data-watts");
+    function savePatient(e) {
+      e.preventDefault();
+
+      const newRecord = {
+        id: Date.now(),
+        name: document.getElementById('name').value.trim(),
+        age: document.getElementById('age').value,
+        gender: document.getElementById('gender').value,
+        diagnosis: document.getElementById('diagnosis').value.trim(),
+        treatment: document.getElementById('treatment').value.trim(),
+        status: document.getElementById('status').value,
+        date: document.getElementById('followUpDate').value || 'Not scheduled'
+      };
+
+      patients.unshift(newRecord);
+      localStorage.setItem('patientsData', JSON.stringify(patients));
+
+      document.getElementById('patientForm').reset();
+      renderPatients(patients);
+    }
+
+    function deletePatient(id) {
+      if(confirm('Are you sure you want to delete this patient record?')) {
+        patients = patients.filter(p => p.id !== id);
+        localStorage.setItem('patientsData', JSON.stringify(patients));
+        renderPatients(patients);
       }
     }
 
-    function detectWaste() {
-      const name = document.getElementById("applianceName").value.trim();
-      const watts = parseFloat(document.getElementById("applianceWatts").value);
-      const hours = parseFloat(document.getElementById("dailyHours").value);
-      const unitRate = 6.5; // Average tariff rate in ₹
-
-      if (!name || isNaN(watts) || isNaN(hours) || hours <= 0 || watts <= 0) {
-        alert("தயவுசெய்து அனைத்து விவரங்களையும் சரியாக உள்ளிடவும்!");
-        return;
-      }
-
-      if (hours > 24) {
-        alert("ஒரு நாளில் பயன்பாட்டு நேரம் 24 மணி நேரத்திற்கு மேல் இருக்க முடியாது!");
-        return;
-      }
-
-      // Calculation: (Watts * Hours) / 1000 = Units (kWh)
-      const unitsPerDay = ((watts * hours) / 1000).toFixed(2);
-      const dailyCost = (unitsPerDay * unitRate).toFixed(2);
-
-      let status = "Normal Usage ✅";
-      let statusColor = "#10b981";
-      let recommendation = "Optimal power consumption! Keep following this routine.";
-
-      // Detection logic
-      if (watts >= 1000 && hours > 8) {
-        status = "Critical Wastage 🚨";
-        statusColor = "#ef4444";
-        recommendation = "Heavy load detected running for extended periods! Use automated timers or optimize running cycles.";
-      } else if (hours > 14) {
-        status = "Excessive Idle Time ⚠️";
-        statusColor = "#f59e0b";
-        recommendation = "This appliance runs idle for too long. Unplug or switch it off when not in active use.";
-      } else if (unitsPerDay > 10) {
-        status = "High Consumption ⚠️";
-        statusColor = "#f59e0b";
-        recommendation = "Daily consumption is high for a single device. Consider 5-star BEE rated energy-efficient models.";
-      }
-
-      // Display results
-      document.getElementById("resName").innerText = name;
-      document.getElementById("resUnits").innerText = `${unitsPerDay} kWh`;
-      document.getElementById("resCost").innerText = `₹${dailyCost}`;
-      
-      const statusElement = document.getElementById("resStatus");
-      statusElement.innerText = status;
-      statusElement.style.color = statusColor;
-
-      document.getElementById("resTip").innerText = recommendation;
-      document.getElementById("outputArea").style.display = "block";
-
-      // Smooth scroll to results
-      document.getElementById("outputArea").scrollIntoView({ behavior: 'smooth' });
+    function filterPatients() {
+      const term = document.getElementById('search').value.toLowerCase();
+      const filtered = patients.filter(p => 
+        p.name.toLowerCase().includes(term) || 
+        p.diagnosis.toLowerCase().includes(term)
+      );
+      renderPatients(filtered);
     }
+
+    function getBadgeClass(status) {
+      if(status === 'Recovered') return 'badge-recovered';
+      if(status === 'Critical') return 'badge-critical';
+      return 'badge-ongoing';
+    }
+
+    function renderPatients(records) {
+      const list = document.getElementById('patientList');
+      list.innerHTML = '';
+
+      if (records.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No patient records found.</p>';
+        return;
+      }
+
+      records.forEach(p => {
+        const item = document.createElement('div');
+        item.className = 'patient-item';
+        item.innerHTML = `
+          <button class="btn-delete" onclick="deletePatient(${p.id})">✕</button>
+          <div class="patient-header">
+            <h4>${p.name} (${p.age} yrs, ${p.gender})</h4>
+            <span class="badge ${getBadgeClass(p.status)}">${p.status}</span>
+          </div>
+          <div class="info-row"><strong>Diagnosis:</strong> ${p.diagnosis}</div>
+          <div class="info-row"><strong>Treatment:</strong> ${p.treatment}</div>
+          <div class="info-row"><strong>Next Visit:</strong> ${p.date}</div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    // Initial render
+    renderPatients(patients);
   </script>
 </body>
 </html>
-
+      
+    
